@@ -1,5 +1,4 @@
-let lotin = [
-  //kirill-lotin uchun lotin alfaviti
+var alpha = [
   "A",
   "B",
   "V",
@@ -76,7 +75,7 @@ let lotin = [
   "o'",
 ];
 
-let alphaLatin = [
+var alphaLatin = [
   //lotin-kirill uchun lotin alfaviti
   "A",
   "B",
@@ -153,7 +152,7 @@ let alphaLatin = [
   "h",
   "‡",
 ];
-let Cyril = [
+var alphaRus = [
   "А",
   "Б",
   "В",
@@ -234,7 +233,7 @@ let Cyril = [
 
 function kirillga(originalMessage) {
   /*original textni olyapti */
-  let CyrillicTranslated = ""; //kirill ga o'girilgan xabar
+  var CyrillicTranslated = ""; //kirill ga o'girilgan xabar
   /*avval bu harf birikmalar o'zgartirilsin : */
   originalMessage = originalMessage.replace(/`/g, "'");
   originalMessage = originalMessage.replace(/ʹ/g, "'");
@@ -279,11 +278,11 @@ function kirillga(originalMessage) {
 
     if (currentWord[0] === "E") {
       // currentWord.charAt(0) = 'Э'; or   currentWord[0] = 'э'; //this is read only ! u cant modify it :)
-      let E = currentWord.replace(/E/i, "Э");
+      var E = currentWord.replace(/E/i, "Э");
       //i means case insensitive. regular expressions are written without quotes. replace() method replaces only the first match
       return E;
     } else if (currentWord[0] === "e") {
-      let e = currentWord.replace(/e/i, "э");
+      var e = currentWord.replace(/e/i, "э");
       return e;
     } else {
       return currentWord; //shu bug ni deb aaancha vatim ketdi! Nega boshqa so'zlarni qaytarmaydi deyman-a yana :)
@@ -295,13 +294,13 @@ function kirillga(originalMessage) {
   /*kirillga o'girish algoritmi :*/
   function encrypt(string) {
     /*asosiy kirill ga o'girish algoritmi */
-    for (let i = 0; i < string.length; i++) {
-      for (let j = 0; j < alphaLatin.length; j++) {
+    for (var i = 0; i < string.length; i++) {
+      for (var j = 0; j < alphaLatin.length; j++) {
         if (string[i] == alphaLatin[j]) {
-          CyrillicTranslated += /* Cyril */ [j];
+          CyrillicTranslated += alphaRus[j];
           break;
         } else if (
-          /*simvollarni va shuningdek o'zi kirill alifbosidagi harflarni ham o'zgartirmaydi: */
+        /*simvollarni va shuningdek o'zi kirill alifbosidagi harflarni ham o'zgartirmaydi: */
           (string.charCodeAt(i) >= 9 && string.charCodeAt(i) <= 11) ||
           (string.charCodeAt(i) > 32 && string.charCodeAt(i) < 39) ||
           (string.charCodeAt(i) > 39 && string.charCodeAt(i) <= 64) ||
@@ -329,7 +328,7 @@ function kirillga(originalMessage) {
 /*====================lotinga o'girish==============================*/
 
 function lotinga(CyrillicMessage) {
-  let LatinTranslated = ""; //lotin ga o'girilgan xabar
+  var LatinTranslated = ""; //lotin ga o'girilgan xabar
 
   function Eliser2(currentWord) {
     //bu e harfini nastroyka qiladi ;)
@@ -449,16 +448,16 @@ function lotinga(CyrillicMessage) {
           currentWord.charCodeAt(z) >= 1040 &&
           currentWord.charCodeAt(z) <= 1071
         ) {
-          let E = currentWord.replace(/Е/i, "YE"); //agar so'z ikkinchi harfidan boshlab (z=1) upper case da bo'lsa, "YE" deb o'zgartir !
+          var E = currentWord.replace(/Е/i, "YE"); //agar so'z ikkinchi harfidan boshlab (z=1) upper case da bo'lsa, "YE" deb o'zgartir !
           return E;
         } else {
-          let E = currentWord.replace(/Е/i, "Ye"); //aks holda "Ye" deb o'zgartir !
+          var E = currentWord.replace(/Е/i, "Ye"); //aks holda "Ye" deb o'zgartir !
           return E;
         }
       }
     } else if (currentWord[0] === "е") {
       //agar e bosh harfda lower case bolib kelsa:
-      let e = currentWord.replace(/е/i, "ye");
+      var e = currentWord.replace(/е/i, "ye");
       return e;
     } else {
       return currentWord;
@@ -469,13 +468,13 @@ function lotinga(CyrillicMessage) {
 
   /*lotinga o'girish algoritmi :*/
   function decrypt(string) {
-    for (let i = 0; i < string.length; i++) {
-      for (let j = 0; j < Cyril.length; j++) {
+    for (var i = 0; i < string.length; i++) {
+      for (var j = 0; j < alphaRus.length; j++) {
         /* lotinchaga o'tkazadi*/
-        if (string[i] == Cyril[j]) {
-          LatinTranslated += lotin[j];
+        if (string[i] == alphaRus[j]) {
+          LatinTranslated += alpha[j];
         } else if (
-          /*simvollar va lotin alfavitidagi so'zlar o'girilmaydi */
+        /*simvollar va lotin alfavitidagi so'zlar o'girilmaydi */
           (string.charCodeAt(i) >= 9 && string.charCodeAt(i) <= 11) ||
           (string.charCodeAt(i) > 32 && string.charCodeAt(i) < 1000) ||
           string.charCodeAt(i) > 1300
@@ -483,7 +482,7 @@ function lotinga(CyrillicMessage) {
           LatinTranslated += string[i];
           break;
         } else if (string.charCodeAt(i) === 32) {
-          /* probelni necha bo'lsa shuncha qo'shadi :)*/
+        /* probelni necha bo'lsa shuncha qo'shadi :)*/
           LatinTranslated += " ";
           break;
         }
@@ -494,7 +493,6 @@ function lotinga(CyrillicMessage) {
   /*natijani return qiladi */
   return LatinTranslated;
 }
-
 function change(text) {
   if (kirillga(text) == text) return lotinga(text);
   else return kirillga(text);
