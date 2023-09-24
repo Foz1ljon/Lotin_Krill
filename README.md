@@ -1,2 +1,3 @@
 # Lotin_Krill
-* v1.0.0 * 
+* v1.0.0
+* Grammy node js telegram bot and mongodb
